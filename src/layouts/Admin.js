@@ -1,11 +1,11 @@
-import React from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import React from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 // core components
-import Navbar from "components/Navbar";
-import Sidebar from "components/Sidebar";
+import Navbar from 'components/Navbar';
+import Sidebar from 'components/Sidebar';
 
-import routes from "../services/routes";
+import routes from 'routes';
 
 class Admin extends React.Component {
   componentDidUpdate() {
@@ -14,7 +14,7 @@ class Admin extends React.Component {
     this.refs.mainContent.scrollTop = 0;
   }
 
-  getRoutes = routes => {
+  getRoutes(routes) {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
         return (
@@ -30,7 +30,7 @@ class Admin extends React.Component {
     });
   }
 
-  getBrandText = () => {
+  getBrandText() {
     for (let i = 0; i < routes.length; i++) {
       if (
         this.props.location.pathname.indexOf(

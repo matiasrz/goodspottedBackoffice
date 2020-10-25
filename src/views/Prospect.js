@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 // reactstrap components
 import {
@@ -20,10 +21,27 @@ import {
   Row,
   UncontrolledTooltip
 } from "reactstrap";
+
 // core components
 import Header from 'components/Header';
+import { getProspects } from 'store/actions/prospect';
+import { redirectIfNotLoggedIn } from 'helpers/authentication';
 
 class Prospect extends Component {
+  constructor(props) {
+    super(props);
+    redirectIfNotLoggedIn(props);
+  }
+
+  componentDidMount() {
+    if(this.props.auth.loggedIn)
+      this.props.getProspects();
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return redirectIfNotLoggedIn(nextProps);
+  }
+
   render() {
     return (
       <>
@@ -862,4 +880,12 @@ class Prospect extends Component {
   }
 }
 
-export default Prospect;
+const mapStateToProps = state => ({
+  auth: state.authentication
+});
+
+const mapDispatchToProps = dispatch => ({
+  getProspects: () => dispatch(getProspects())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Prospect);
