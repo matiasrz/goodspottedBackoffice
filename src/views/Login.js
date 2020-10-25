@@ -1,43 +1,42 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Button, Card, CardBody, FormGroup, Form, Input, InputGroupAddon, InputGroupText,
          InputGroup, Col } from 'reactstrap';
 
-import { unauthInstance } from '../services/api';
-
-function emailCheck(email) {
-  const regexp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return regexp.test(String(email).toLowerCase());
-}
+import { emailCheck } from 'helpers/form'
+import { redirectIfLoggedIn } from 'helpers/authentication'
+import { authenticate } from 'store/actions/authentication'
 
 class Login extends Component {
-  state = { email: '', password: '' }
+  constructor(props) {
+    super(props);
+    redirectIfLoggedIn(props);
 
-  handleSubmit = (e) => {
+    this.state = { email: '', password: '' }
+    this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+  
+  shouldComponentUpdate(nextProps) {
+    return redirectIfLoggedIn(nextProps);
+  }
+
+  handleSubmit(e) {
     e.stopPropagation();
     e.preventDefault();
-    const { email, password } = this.state
-    const { history } = this.props
+    const { email, password } = this.state
 
     var isError = emailCheck(email) && password.length >= 6
     if(isError) {
-      console.log('No errors')
-      
-      unauthInstance.post('/login', { user: this.state })
-        .then(function (response) {
-          console.log('response: ', response.headers.authorization)
-          history.replace('/admin/prospects')
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    } else {
+      this.props.authenticate(this.state)
+    } else {
       console.log('errors')
     }
-  };
+  }
 
-  handleInputChange = (e) => {
+  handleInputChange(e) {
     this.setState({ [e.target.type]: e.target.value });
-  };
+  }
 
   render() {
     return (
@@ -80,4 +79,12 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = state => ({
+  auth: state.authentication
+});
+
+const mapDispatchToProps = dispatch => ({
+  authenticate: (userData) => dispatch(authenticate(userData))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

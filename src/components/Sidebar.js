@@ -37,19 +37,19 @@ class Sidebar extends Component {
     return this.props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
   }
   // toggles collapse between opened and closed (true/false)
-  toggleCollapse = () => {
+  toggleCollapse() {
     this.setState({
       collapseOpen: !this.state.collapseOpen
     });
-  };
+  }
   // closes the collapse
-  closeCollapse = () => {
+  closeCollapse() {
     this.setState({
       collapseOpen: false
     });
-  };
+  }
   // creates the links that appear in the left menu / Sidebar
-  createLinks = routes => {
+  createLinks(routes) {
     return routes.map((prop, key) => {
       if(prop.isVisible)
         return (
@@ -66,7 +66,8 @@ class Sidebar extends Component {
           </NavItem>
         );
     });
-  };
+  }
+
   render() {
     const { bgColor, routes, logo } = this.props;
     let navbarBrandProps;

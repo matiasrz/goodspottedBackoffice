@@ -1,0 +1,2 @@
+export const PROSPECT_LIST = 'PROSPECT_LIST'
+export const ACTION_FAILURE = 'ACTION_FAILURE'

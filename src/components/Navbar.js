@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // reactstrap components
@@ -13,7 +14,10 @@ import {
   Media
 } from 'reactstrap';
 
-const adminNavbar = props => {
+import { logout } from 'store/actions/authentication';
+
+const adminNavbar = (props) => {
+  const { brandText, logoutHandler } = props;
   return (
     <>
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
@@ -22,7 +26,7 @@ const adminNavbar = props => {
             className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
             to="/"
           >
-            {props.brandText}
+            {brandText}
           </Link>
           <Nav className="align-items-center d-none d-md-flex" navbar>
             <UncontrolledDropdown nav>
@@ -45,7 +49,7 @@ const adminNavbar = props => {
                 <DropdownItem className="noti-title" header tag="div">
                   <h6 className="text-overflow m-0">Welcome!</h6>
                 </DropdownItem>
-                <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                <DropdownItem href="#pablo" onClick={() => logoutHandler()}>
                   <i className="ni ni-user-run" />
                   <span>Logout</span>
                 </DropdownItem>
@@ -58,4 +62,8 @@ const adminNavbar = props => {
   );
 }
 
-export default adminNavbar;
+const mapDispatchToProps = dispatch => ({
+  logoutHandler: () => dispatch(logout())
+})
+
+export default connect(undefined, mapDispatchToProps)(adminNavbar);
