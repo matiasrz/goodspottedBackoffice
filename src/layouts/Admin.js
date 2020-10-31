@@ -2,8 +2,8 @@ import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 // core components
-import Navbar from 'components/Navbar';
-import Sidebar from 'components/Sidebar';
+import Navbar from 'components/UI/Navbar';
+import Sidebar from 'components/UI/Sidebar';
 
 import routes from 'routes';
 

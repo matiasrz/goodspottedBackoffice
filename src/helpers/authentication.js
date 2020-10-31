@@ -16,7 +16,7 @@ export const redirectIfLoggedIn = (props) => {
 }
 
 const nowAsUnixTime = () => {
-  var date = new Date(0);
+  var date = new Date();
   return Math.round(date.getTime() / 1000);
 }
 

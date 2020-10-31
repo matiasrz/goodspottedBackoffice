@@ -11,13 +11,13 @@ const actionFailure = (type, payload) => ({
   payload
 });
 
-export const getProspects = () => {  
+export const getProspects = (query = '') => {  
   return (dispatch, getState) => {
     const { authentication: { token } } = getState()
     const authInstance = buildAuthInstance(token)
-    authInstance.get('/product_prospects')
+    authInstance.get(`/product_prospects?${query}`)
       .then(function (response) {
-        dispatch(actionSuccess(types.PROSPECT_LIST , response));
+        dispatch(actionSuccess(types.PROSPECT_LIST , response.data));
       })
       .catch(function (error) {
         dispatch(actionFailure(types.ACTION_FAILURE , error));
